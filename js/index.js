@@ -1,24 +1,27 @@
 $(document).ready(() => {
+
     const updateRecordPromise = new Promise((resolve, reject) => {
         // Get your data here from ajax then resolve it
+        let data = ['Record1', 'Record2', 'Record3'];
         // This is just mock data
-        resolve(['Record1', 'Record2', 'Record3']);
+        resolve(data);
     });
 
     const getRecordTypesPromise = new Promise((resolve, reject) => {
         // Get your data here from ajax then resolve it
         // This is just mock data
-        resolve(['Facilities', 'SomethingElse', 'SomethingElseToo']);
+        resolve(['Oklahoma', 'MD', 'DC']);
     })
 
     // Load default page
     $('#form-container').load('../html/addRecord.html', () => {
         $('#addRecordLink').addClass('active');
-        $('#addFormTypeInput').val($('#formTypeSelect').val());
+        $('#addFacilityInput').val($('#facilitySelect').val());
 
         $('#addRecordForm').on('submit', $event => {
             $event.preventDefault();
             // Do something wtih the data here.
+            console.log($event);
             console.log('addRecordForm submitted!');
         });
 
@@ -29,7 +32,7 @@ $(document).ready(() => {
         for (const option of optionsList) {
             options.push(`<option value="${option}">${option}</option>`);
         }
-        $('#formTypeSelect').append(options)
+        $('#facilitySelect').append(options)
     });
 
     $('#addRecordLink').click($event => {
@@ -41,7 +44,9 @@ $(document).ready(() => {
             // Update navbar css
             $('#updateRecordLink').removeClass('active');
             $('#addRecordLink').addClass('active');
-            $('#addFormTypeInput').val($('#formTypeSelect').val())
+
+            // Set form type
+            $('#addFacilityInput').val($('#facilitySelect').val())
 
             $('#addRecordForm').on('submit', $event => {
                 $event.preventDefault();
@@ -49,8 +54,6 @@ $(document).ready(() => {
                 console.log('addRecordForm submitted!');
             });
         });
-
-
     });
 
     $('#updateRecordLink').click($event => {
@@ -63,13 +66,13 @@ $(document).ready(() => {
             // Update Nav styling
             $('#addRecordLink').removeClass('active');
             $('#updateRecordLink').addClass('active');
-            $('#updateFormTypeInput').val($('#formTypeSelect').val());
+            $('#updateFacilityInput').val($('#facilitySelect').val());
 
             // Grab previous data
             updateRecordPromise.then(updateRecordIds => {
                 let htmlRecordArray = [];
                 for (const record of updateRecordIds) {
-                    let modifiedRecordString = `<option data="${record}">${record}</option>`
+                    let modifiedRecordString = `<option value="${record}">${record}</option>`
                     htmlRecordArray.push(modifiedRecordString);
                 }
                 return htmlRecordArray;
@@ -86,15 +89,10 @@ $(document).ready(() => {
         });
     });
 
-
-
-
-
-
     // Handle Navbar form type change at top.
-    $('#formTypeSelect').on('change input', $event => {
-        $('#addFormTypeInput').val($('#formTypeSelect').val());
-        $('#updateFormTypeInput').val($('#formTypeSelect').val());
+    $('#facilitySelect').on('change input', $event => {
+        $('#addFacilityInput').val($('#facilitySelect').val());
+        $('#updateFacilityInput').val($('#facilitySelect').val());
     });
 
 }); 

@@ -2,13 +2,18 @@ $(document).ready(() => {
 
     const updateRecordPromise = new Promise((resolve, reject) => {
         // Get your data here from ajax then resolve it
-        let data = ['Record1', 'Record2', 'Record3'];
-        // This is just mock data
-        resolve(data);
+        $.ajax({
+            url: './js/sampleRecords.json',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                resolve(data.records);
+            }});
     });
 
     const getRecordTypesPromise = new Promise((resolve, reject) => {
         // Get your data here from ajax then resolve it
+
         // This is just mock data
         resolve(['Oklahoma', 'MD', 'DC']);
     })

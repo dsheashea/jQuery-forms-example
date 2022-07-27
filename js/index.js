@@ -142,7 +142,7 @@ $(document).ready(() => {
                     console.error(error);
                 })
 
-            });
+            })
         });
 
 

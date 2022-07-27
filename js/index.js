@@ -5,15 +5,15 @@ $(document).ready(() => {
         $.ajax({
             url: './js/sampleRecords.json',
             dataType: 'json',
-            success: function(data) {
+            success: function (data) {
                 console.log(data);
                 resolve(data.records);
-            }});
+            }
+        });
     });
 
     const getRecordTypesPromise = new Promise((resolve, reject) => {
         // Get your data here from ajax then resolve it
-
         // This is just mock data
         resolve(['Oklahoma', 'MD', 'DC']);
     })
@@ -99,5 +99,55 @@ $(document).ready(() => {
         $('#addFacilityInput').val($('#facilitySelect').val());
         $('#updateFacilityInput').val($('#facilitySelect').val());
     });
+
+
+    /**
+    * Takes an array of strings, then converts each individual element
+    * to <option value="optionValue">optionValue</option>
+    * @param {*} options 
+    */
+    function convertArrayElementsToHtmlOptions(options) {
+        let array = [];
+        for (const option of options) {
+            array.push(`<option value="${option}">${option}</option>`);
+        }
+
+        return array;
+    }
+
+
+    $('#dynamicDropdownLink').click($event => {
+        $event.preventDefault();
+
+        $('#form-container').load('../html/dynamicDropdown.html', () => {
+
+            // Update Nav styling
+            $('#dynamicDropdownLink').addClass('active');
+            $('#addRecordLink').removeClass('active');
+            $('#updateRecordLink').removeClass('active');
+            $('#updateFacilityInput').val($('#facilitySelect').val());
+
+            $('#positionSelect').on('change input', $event => {
+
+                let dropdownOneValue = $('#positionSelect').val();
+                const sasPromise = new Promise((resolve, reject) => {
+                    // `SELECT DISTINCT * FROM WHATEVER WHERE id=${dropdownOneValue}`
+                    resolve(['pos1Option1', 'pos1Option2', 'pos1Option3']);
+                });
+
+                sasPromise.then(response => {
+                    console.log(response);
+                    $('#secondSelect').empty().append(convertArrayElementsToHtmlOptions(response));
+                }).catch(error => {
+                    console.error(error);
+                })
+
+            });
+        });
+
+
+    })
+
+
 
 }); 
